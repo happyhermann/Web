@@ -87,10 +87,11 @@ function App() {
             </div>
           }
         />
+
         <Route
           path="/detail/:id"
           // id : URL 파라미터
-          element={<Detail books={books} />}
+          element={<Detail books={books} booksState={booksState} />}
         />
 
         {/* <Route path="*" element={<div>없는페이지</div>} /> */}
@@ -126,7 +127,6 @@ function Lists(props) {
   let bookTitle = [...props.bookTitle];
   let bookEnglish = [...props.bookEnglish];
   let imgs = props.이미지주소;
-  console.log(imgs);
   return (
     <>
       <div className="col-md-4">
@@ -137,7 +137,7 @@ function Lists(props) {
     </>
   );
 }
-sss;
+
 function Event() {
   return (
     <div>

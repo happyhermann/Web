@@ -15,6 +15,13 @@ function Detail(props) {
   // 유저가 URL파라미터에 입력한거 가져오려면
   // useParams(); 함수 선언하기
 
+  let 찾은상품 = props.books.find(function (x) {
+    return x.id == id;
+    // array자료.id == url에 입력한 번호일 경우 결과를 변수에 담아줌
+    // {상품 1개} 이런거 남을 듯
+  });
+  console.log(찾은상품);
+
   return (
     <div className="container">
       <div className="row">
@@ -22,9 +29,9 @@ function Detail(props) {
           <img src={imgs[id]} width="100%" />
         </div>
         <div className="col-md-6">
-          <h4 className="pt-5">{props.books[id].title}</h4>
-          <p>{props.books[id].title}</p>
-          <p>{props.books[id].price}원</p>
+          <h4 className="pt-5">{찾은상품.title}</h4>
+          <p>{찾은상품.title}</p>
+          <p>{찾은상품.price}원</p>
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
