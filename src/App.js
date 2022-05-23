@@ -137,7 +137,6 @@ function Lists(props) {
     </>
   );
 }
-sss;
 function Event() {
   return (
     <div>
