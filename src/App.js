@@ -8,6 +8,7 @@ import axios from "axios";
 
 function App() {
   let [books, booksState] = useState(data);
+  let [click, clickState] = useState(0);
   let navigate = useNavigate();
   console.log(books);
   // 1. 페이지 이동도와주는 useNavigate();
@@ -19,6 +20,9 @@ function App() {
     "https://m.media-amazon.com/images/I/81aWQ68Ko+L._AC_UY436_FMwebp_QL65_.jpg",
     "https://m.media-amazon.com/images/I/81+FqWQUwOL._AC_UY436_FMwebp_QL65_.jpg",
     "https://m.media-amazon.com/images/I/81YNcVhMwoL._AC_UY436_FMwebp_QL65_.jpg",
+    "https://m.media-amazon.com/images/I/61okRL4awVL._AC_UY218_.jpg",
+    "https://m.media-amazon.com/images/I/61DPY6pk6OL._AC_UL320_.jpg",
+    "https://m.media-amazon.com/images/I/81WlPc-wF7L._AC_UL320_.jpg",
   ];
   // 길고 복잡한 코드는 다른 파일에 빼놓을 수 있음
   // 1. 변수를 export
@@ -131,8 +135,18 @@ function App() {
       <button
         style={{ padding: "10px 20px" }}
         onClick={() => {
+          clickState(click + 1);
+
+          let url = [
+            "https://codingapple1.github.io/shop/data2.json",
+            "https://codingapple1.github.io/shop/data3.json",
+          ];
+
+          if (click == 1) {
+            url[0] = url[1];
+          }
           axios
-            .get("https://codingapple1.github.io/shop/data2.json")
+            .get(url[0])
             // 1. 데이터를 가져오고
             .then((결과) => {
               let data = 결과.data;
@@ -147,10 +161,18 @@ function App() {
             .catch(() => {
               console.log("실패함ㅅㄱ");
             });
+
           // Q. ajax 요청 실패할 경우?
           // A. catch .catch()로 실패할 경우 어떤 함수를 실행할 것인지 임의 설정가능
 
           // ajax 이용한 GET요청은 axios.get('url')
+
+          //* 서버로 데이터 전송하는 POST 요청 */\
+          // axios.post("'/sdf", {name : 'Lee'});
+
+          //* 동시에 ajax 요청 여러개 하려면
+          // Promise.all([axios.get("/url1"), axios.get("/ur12")]).then(() => {});
+          // 전부다 받아오면! then (그러면) 이곳에 함수 실행해주세요! 라는 의미
         }}
       >
         더보기
