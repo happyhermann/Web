@@ -1,15 +1,16 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+
 // styled-components쓰면 JS파일에서 전부 해결가능
 
 // 오렌지 버튼이 필요하면? -props 문법쓰면 더 편리함
 // pros로 컴포넌트 재활용 가능
-let YellowButton = styled.button`
-  background: ${(props) => props.bg};
-  color: ${(props) => (props.bg == "blue" ? "white" : "black")};
-  padding: 10px;
-`;
+// let YellowButton = styled.button`
+//   background: ${(props) => props.bg};
+//   color: ${(props) => (props.bg == "blue" ? "white" : "black")};
+//   padding: 10px;
+// `;
 
 //stlyed-components 문법
 // 장점1 CSS파일 안열고 JS파일에서 만들기 가능
@@ -124,9 +125,5 @@ function Detail(props) {
 function Ad() {
   return <div className="alert alert-warning">2초이내 구매시 할인</div>;
 }
-
-
-
-
 
 export default Detail;

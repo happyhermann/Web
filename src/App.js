@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/detail";
+import axios from "axios";
 
 function App() {
   let [books, booksState] = useState(data);
   let navigate = useNavigate();
-
+  console.log(books);
   // 1. 페이지 이동도와주는 useNavigate();
 
   const imgs = [
@@ -75,9 +76,10 @@ function App() {
                   {books.map(function (a, i) {
                     return (
                       <Lists
-                        bookTitle={books[i].title}
-                        bookEnglish={books[i].english}
-                        책변경={booksState}
+                        books={books[i]}
+                        i={i}
+                        key={i}
+                        booksState={booksState}
                         이미지주소={imgs[i]}
                       />
                     );
@@ -119,21 +121,56 @@ function App() {
             장점 2. /about하고 /member 접속시엔 Element 2개나 보임 
              */}
       </Routes>
+
+      {/* ajax : 새로고침 없이도 GET/POST 요청 가능 */}
+      {/* ajax 옵션 3개 중 택1 가능 
+          1. XMLHttpRequest
+          2. fetch()
+          3. axios
+      */}
+      <button
+        style={{ padding: "10px 20px" }}
+        onClick={() => {
+          axios
+            .get("https://codingapple1.github.io/shop/data2.json")
+            // 1. 데이터를 가져오고
+            .then((결과) => {
+              let data = 결과.data;
+              let copy = [...books, ...결과.data];
+              // 2. 스테이트에 집어 넣고
+              // *스프레드 {},{},{} // {},{},{} = 괄호 벗겨주는 문법
+              booksState(copy);
+              // 3. 상품이 생성됨
+
+              // 동적인 UI 만드는 법을 잘 기억해두자
+            })
+            .catch(() => {
+              console.log("실패함ㅅㄱ");
+            });
+          // Q. ajax 요청 실패할 경우?
+          // A. catch .catch()로 실패할 경우 어떤 함수를 실행할 것인지 임의 설정가능
+
+          // ajax 이용한 GET요청은 axios.get('url')
+        }}
+      >
+        더보기
+      </button>
+      {/* ajax 숙제 : 버튼누르면 데이터 더 가져와서 html로 보여주기 */}
+
       <Input />
     </div>
   );
 }
 
 function Lists(props) {
-  let bookTitle = [...props.bookTitle];
-  let bookEnglish = [...props.bookEnglish];
   let imgs = props.이미지주소;
+
   return (
     <>
       <div className="col-md-4">
         <img className="img" src={imgs} width="80%" />
-        <h4 className="titles"> {bookTitle}</h4>
-        <p>{bookEnglish}</p>
+        <h4 className="titles"> {props.books.title}</h4>
+        <p>{props.books.english}</p>
       </div>
     </>
   );
@@ -156,7 +193,7 @@ function Input() {
 
   useEffect(() => {
     if (isNaN(text) == true) {
-      console.log("숫자만 적으세요");
+      alert("숫자만 적으세요");
     }
     //** input에 입력한 값은 전부 문자형태로 출력되는 특성 가짐  **/
     // 4. 문자/숫자 파악은 isNaN() 함수 쓰면 됌

@@ -19,24 +19,6 @@ let data = [
     english: "Fahrenheit 451",
     price: 130000,
   },
-  {
-    id: 3,
-    title: "월든",
-    english: "Walden",
-    price: 140000,
-  },
-  {
-    id: 4,
-    title: "자본론",
-    english: "Das Kapital",
-    price: 180000,
-  },
-  {
-    id: 5,
-    title: "크눌프",
-    english: "Knulp",
-    price: 9000,
-  },
 ];
 
 export default data;
