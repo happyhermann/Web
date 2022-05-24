@@ -1,6 +1,6 @@
 import "./App.css";
 import { Container, Navbar, Nav } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/detail";
@@ -119,6 +119,7 @@ function App() {
             장점 2. /about하고 /member 접속시엔 Element 2개나 보임 
              */}
       </Routes>
+      <Input />
     </div>
   );
 }
@@ -144,6 +145,40 @@ function Event() {
       <h3>오늘의 이벤트</h3>
       <Outlet></Outlet>
     </div>
+  );
+}
+
+// useEffect를 사용하여 input state 변경에 따라 조건문으로 걸러내기
+
+function Input() {
+  const [text, setText] = useState("");
+  // 1. input 값 받아올 useState 값 설정
+
+  useEffect(() => {
+    if (isNaN(text) == true) {
+      console.log("숫자만 적으세요");
+    }
+    //** input에 입력한 값은 전부 문자형태로 출력되는 특성 가짐  **/
+    // 4. 문자/숫자 파악은 isNaN() 함수 쓰면 됌
+    // 문자열이면 true / 숫자면 false가 나옴
+  }, [text]);
+
+  // 3. useEffect 함수 설정
+  // why? html 랜더링후 특정 조건만이 변경했을 때만 '재랜더링' 시켜줘서 랜더링을 줄여 줄 수 있음
+  // [text] 변수, 즉 state (인풋에 입력) 값이 입력됐을 때만 useEffect안에 쓰인 코드 실행되게 설정
+
+  return (
+    <form>
+      <input
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+      />
+      {/* 2. input 태그 만들고 onChange 속성 부여 
+      => setText (state 변경함수)에 e.target.value 이벤트 DOM 변경 */}
+      <button type="submit">summit</button>
+      <h4>{text}</h4>
+    </form>
   );
 }
 
