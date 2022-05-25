@@ -2,6 +2,20 @@
   text-align: center;
 }
 
+.start {
+  opacity: 0;
+}
+
+.end {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+/* 전환애니메이션은 
+1. 애니메이션 동작 전 className 만들기
+2. 애니메이션 동작 후 className 만들기
+3. transition 추가  */
+
 .main-bg {
   height: 400px;
   background-image: url("./book.webp");

@@ -1,5 +1,6 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { Nav } from "react-bootstrap";
 // import styled from "styled-components";
 
 // styled-components쓰면 JS파일에서 전부 해결가능
@@ -66,6 +67,8 @@ function Detail(props) {
   // useEffect와 setTimeout을 이용해서 비동기적으로?
   let [count, setCount] = useState(0);
   let [hidden, setHidden] = useState(true);
+  let [tap, tapChange] = useState(0);
+  // 0번 내용이 보이는 상태
 
   // 숙제 div 2초후 사라지게 만들기
   // (동적 UI 만들기)
@@ -118,6 +121,90 @@ function Detail(props) {
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
+
+      {/* 리액트에서 탭 UI 만들기 */}
+      {/* 1. html css로 미리 디자인 */}
+      <Nav variant="tabs" defaultActiveKey="link1">
+        {/* 기본적으로 눌려있을 버튼 (defaultActiveKey) */}
+        <Nav.Item
+          onClick={() => {
+            tapChange(0);
+          }}
+        >
+          <Nav.Link eventKey="link0">버튼0</Nav.Link>
+        </Nav.Item>
+        <Nav.Item
+          onClick={() => {
+            tapChange(1);
+          }}
+        >
+          <Nav.Link eventKey="link1">버튼1</Nav.Link>
+        </Nav.Item>
+        <Nav.Item
+          onClick={() => {
+            tapChange(2);
+          }}
+        >
+          <Nav.Link eventKey="link2">버튼2</Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <TabContent tap={tap} tapChange={tapChange} />
+
+      {/* 2. 탭 상태 저장해줄 state 필요 */}
+    </div>
+
+    /* 3. state에 따라서 UI가 어떻게 보일지 작성
+      A. 조건문을 쓰면 된다! */
+    // Q. 삼항 연산자는 여러 가지 조건을 쓸 수 없기에 일반 if 조건문을 써야함
+    // 그러나 html 안에서는 If 조건문을 쓸 수 없기때문에 바깥에서 써야함
+  );
+}
+
+// 그런데 어떻게 집어넣을까?
+// 답 : 컴포넌트를 집어넣으면 된다.
+
+// **주의사항** 컴포넌트는 함수이기때문에 'return'문을 반드시 써야함
+
+// function TabContent(props) {
+//   if (props.tap == 0) {
+//     return <div>내용0</div>;
+//   } else if (props.tap == 1) {
+//     return <div>내용1</div>;
+//   } else if (props.tap == 2) {
+//     return <div>내용2</div>;
+//   }
+// }
+
+// 팁2 센스 좋으면 if 필요없을 수도
+function TabContent({ tap }) {
+  let [fade, setFade] = useState("");
+  // 4-1 탭 state가 변할 떄 end 부착
+  // * 4-2 탭 state가 변할 때 end '뗏다가' 부착해야 실질적으로 애니메이션이 동작하는데
+  // *** 어떻게 해야할까? A. "Clearfunction을 이용하자" + setTimeout 함수 (() => {}, 100)
+
+  useEffect(() => {
+    let a = setTimeout(() => {
+      setFade("end");
+      // 이거 2빠
+    }, 100);
+    // **왜 setTimeout을 써야만 구현될까?
+    // 리액트의 automatic batching 기능때문이다.
+    // state변경함수()를 다 한다음에 마지막에 재렌더링해주기 때문이다.
+    // 그러니 1빠2빠를 합쳐서 실행하니까 최종적으로 end로만 바뀌니까 안되는 것 뗏다붙여다가 안됨
+    // ***시간차를 두게 되면 의도대로 동작**
+
+    return () => {
+      clearTimeout(a);
+      setFade("");
+      // 이게 1빠
+      //
+    };
+  }, [tap]);
+  // [tap]이 변경될 때 마다 안의 코드 실행 해줌
+
+  return (
+    <div className={"start " + fade}>
+      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tap]}
     </div>
   );
 }

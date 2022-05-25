@@ -9,6 +9,7 @@ import axios from "axios";
 function App() {
   let [books, booksState] = useState(data);
   let [click, clickState] = useState(0);
+  let [btnHidden, btnState] = useState(true);
   let navigate = useNavigate();
   console.log(books);
   // 1. 페이지 이동도와주는 useNavigate();
@@ -134,7 +135,7 @@ function App() {
       */}
       <button
         style={{ padding: "10px 20px" }}
-        onClick={() => {
+        onClick={(e) => {
           clickState(click + 1);
 
           let url = [
@@ -144,9 +145,12 @@ function App() {
 
           if (click == 1) {
             url[0] = url[1];
+          } else if (click == 2) {
+            alert("더이상 상품이 없습니다");
           }
           axios
             .get(url[0])
+
             // 1. 데이터를 가져오고
             .then((결과) => {
               let data = 결과.data;
