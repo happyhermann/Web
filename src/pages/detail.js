@@ -1,6 +1,11 @@
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Nav } from "react-bootstrap";
+
+import { Context1 } from "./../App.js";
+// context API state 사용
+// 1. Context를 Import
+
 // import styled from "styled-components";
 
 // styled-components쓰면 JS파일에서 전부 해결가능
@@ -31,6 +36,10 @@ import { Nav } from "react-bootstrap";
 //필요없으면 제거 (unmount)
 
 function Detail(props) {
+  let { 재고 } = useContext(Context1);
+  //보관함을 해제해주는 함수임
+  // state 2. useConext(Context1)
+
   useEffect(() => {
     // mount, update시 코드 실행해주는 useEffect
     let a = setTimeout(function () {
@@ -104,12 +113,11 @@ function Detail(props) {
   console.log(찾은상품);
 
   return (
-    <div className="container">
+    <div className="container start end">
       {hidden && <Ad />}
       {/* 조건문 hidden이 State(true)일때 Ad 반환한다는 간결한 문법 */}
       {/* *애플코딩 삼항연산자 방식 
       hidden == true ? <Ad/> : null */}
-
       <div className="row">
         <div className="col-md-6">
           <img src={imgs[id]} width="100%" />
@@ -148,7 +156,7 @@ function Detail(props) {
           <Nav.Link eventKey="link2">버튼2</Nav.Link>
         </Nav.Item>
       </Nav>
-      <TabContent tap={tap} tapChange={tapChange} />
+      <TabContent tap={tap} books={props.books} tapChange={tapChange} />
 
       {/* 2. 탭 상태 저장해줄 state 필요 */}
     </div>
@@ -176,8 +184,10 @@ function Detail(props) {
 // }
 
 // 팁2 센스 좋으면 if 필요없을 수도
-function TabContent({ tap }) {
+function TabContent({ tap, books }) {
   let [fade, setFade] = useState("");
+  let { 재고 } = useContext(Context1);
+
   // 4-1 탭 state가 변할 떄 end 부착
   // * 4-2 탭 state가 변할 때 end '뗏다가' 부착해야 실질적으로 애니메이션이 동작하는데
   // *** 어떻게 해야할까? A. "Clearfunction을 이용하자" + setTimeout 함수 (() => {}, 100)
@@ -204,10 +214,15 @@ function TabContent({ tap }) {
 
   return (
     <div className={"start " + fade}>
-      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tap]}
+      {[<div>{재고}</div>, <div>11</div>, <div>내용2</div>][tap]}
     </div>
   );
 }
+
+//** 참고 */
+//props 싫으면
+// 1. Context API (리액트 기본문법) : props 전송없이 state 공유가능
+// 2. Redux 등 외부 라이브러리
 
 function Ad() {
   return <div className="alert alert-warning">2초이내 구매시 할인</div>;

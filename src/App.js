@@ -1,13 +1,27 @@
 import "./App.css";
 import { Container, Navbar, Nav } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/detail";
 import axios from "axios";
 
+// Context API
+
+// 특징
+// 1. state 변경시 쓸데없는 것까지 재렌더링
+// 2. 나중에 컴포넌트 재사용이 어려움 (다른 페이지에서 Import해서 재사용하려면)
+
+// 셋팅1. createContext() '보관함 만들기'
+export let Context1 = createContext();
+// 셋팅2, <Context>로 원하는 컴포넌트 감싸기
+//  => Routh path detail:id Detail로 가서 감싸기
+
 function App() {
   let [books, booksState] = useState(data);
+  let [재고] = useState([10, 11, 12]);
+  // 이것을 Detail, tabcontent에서 쓰고 싶다면? props 써도 되지만
+  // Context API를 이용해보자 props 없이 state 사용 가능
   let [click, clickState] = useState(0);
   let [btnHidden, btnState] = useState(true);
   let navigate = useNavigate();
@@ -59,7 +73,7 @@ function App() {
             </Nav.Link>
             <Nav.Link
               onClick={() => {
-                navigate("/detail");
+                navigate("/detail/0");
               }}
             >
               Detail
@@ -98,7 +112,13 @@ function App() {
         <Route
           path="/detail/:id"
           // id : URL 파라미터
-          element={<Detail books={books} booksState={booksState} />}
+          element={
+            <Context1.Provider value={{ 재고 }}>
+              {/* 셋팅3. value={{state1, state2...}} */}
+              <Detail books={books} booksState={booksState} />
+              {/* 이제 여기 안의 모든 컴포넌트는 재고, shoes 사용가능 */}
+            </Context1.Provider>
+          }
         />
 
         {/* <Route path="*" element={<div>없는페이지</div>} /> */}
