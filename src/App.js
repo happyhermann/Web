@@ -5,6 +5,7 @@ import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/detail";
 import axios from "axios";
+import Cart from "./pages/Cart";
 
 // Context API
 
@@ -69,7 +70,7 @@ function App() {
                 // 이 함수를 이용하면 페이지 이동 가능
               }}
             >
-              홈
+              Home
             </Nav.Link>
             <Nav.Link
               onClick={() => {
@@ -78,7 +79,14 @@ function App() {
             >
               Detail
             </Nav.Link>
-            <Nav.Link href="#pricing">도서</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+              href="#pricing"
+            >
+              Cart
+            </Nav.Link>
             <Nav.Link href="#features">Q&A</Nav.Link>
           </Nav>
         </Container>
@@ -145,6 +153,7 @@ function App() {
         {/* 장점 1. 라우트 작성이 약간 간단해짐
             장점 2. /about하고 /member 접속시엔 Element 2개나 보임 
              */}
+        <Route path="/cart" element={<Cart />} />
       </Routes>
 
       {/* ajax : 새로고침 없이도 GET/POST 요청 가능 */}

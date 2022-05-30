@@ -1,8 +1,11 @@
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { Nav } from "react-bootstrap";
-
 import { Context1 } from "./../App.js";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addItem } from "./../store.js";
+
 // context API state 사용
 // 1. Context를 Import
 
@@ -112,6 +115,8 @@ function Detail(props) {
   });
   console.log(찾은상품);
 
+  let dispatch = useDispatch();
+
   return (
     <div className="container start end">
       {hidden && <Ad />}
@@ -126,7 +131,14 @@ function Detail(props) {
           <h4 className="pt-5">{찾은상품.title}</h4>
           <p>{찾은상품.title}</p>
           <p>{찾은상품.price}원</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button
+            onClick={() => {
+              dispatch(addItem({ id: 1, name: "Red Knit", count: 1 }));
+            }}
+            className="btn btn-danger"
+          >
+            주문하기
+          </button>
         </div>
       </div>
 
